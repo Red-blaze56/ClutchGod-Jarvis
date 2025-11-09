@@ -1,0 +1,56 @@
+Vector quantization, or seeing k-means as decomposition
+Even though k-means is a clustering algorithm, there are interesting parallels between
+k-means and the decomposition methods like PCA and NMF that we discussed ear‐
+lier. You might remember that PCA tries to find directions of maximum variance in
+the data, while NMF tries to find additive components, which often correspond to
+“extremes” or “parts” of the data (see Figure 3-13). Both methods tried to express the
+data points as a sum over some components. k-means, on the other hand, tries to rep‐
+resent each data point using a cluster center. You can think of that as each point being
+represented using only a single component, which is given by the cluster center. This
+view of k-means as a decomposition method, where each point is represented using a
+single component, is called vector quantization.
+176
+|
+Chapter 3: Unsupervised Learning and Preprocessing
+Let’s do a side-by-side comparison of PCA, NMF, and k-means, showing the compo‐
+nents extracted (Figure 3-30), as well as reconstructions of faces from the test set
+using 100 components (Figure 3-31). For k-means, the reconstruction is the closest
+cluster center found on the training set:
+In[57]:
+X_train, X_test, y_train, y_test = train_test_split(
+X_people, y_people, stratify=y_people, random_state=0)
+nmf = NMF(n_components=100, random_state=0)
+nmf.fit(X_train)
+pca = PCA(n_components=100, random_state=0)
+pca.fit(X_train)
+kmeans = KMeans(n_clusters=100, random_state=0)
+kmeans.fit(X_train)
+X_reconstructed_pca = pca.inverse_transform(pca.transform(X_test))
+X_reconstructed_kmeans = kmeans.cluster_centers_[kmeans.predict(X_test)]
+X_reconstructed_nmf = np.dot(nmf.transform(X_test), nmf.components_)
+In[58]:
+fig, axes = plt.subplots(3, 5, figsize=(8, 8),
+subplot_kw={'xticks': (), 'yticks': ()})
+fig.suptitle("Extracted Components")
+for ax, comp_kmeans, comp_pca, comp_nmf in zip(
+axes.T, kmeans.cluster_centers_, pca.components_, nmf.components_):
+ax[0].imshow(comp_kmeans.reshape(image_shape))
+ax[1].imshow(comp_pca.reshape(image_shape), cmap='viridis')
+ax[2].imshow(comp_nmf.reshape(image_shape))
+axes[0, 0].set_ylabel("kmeans")
+axes[1, 0].set_ylabel("pca")
+axes[2, 0].set_ylabel("nmf")
+fig, axes = plt.subplots(4, 5, subplot_kw={'xticks': (), 'yticks': ()},
+figsize=(8, 8))
+fig.suptitle("Reconstructions")
+for ax, orig, rec_kmeans, rec_pca, rec_nmf in zip(
+axes.T, X_test, X_reconstructed_kmeans, X_reconstructed_pca,
+X_reconstructed_nmf):
+ax[0].imshow(orig.reshape(image_shape))
+ax[1].imshow(rec_kmeans.reshape(image_shape))
+ax[2].imshow(rec_pca.reshape(image_shape))
+ax[3].imshow(rec_nmf.reshape(image_shape))
+axes[0, 0].set_ylabel("original")
+axes[1, 0].set_ylabel("kmeans")
+axes[2, 0].set_ylabel("pca")
+axes[3, 0].set_ylabel("nmf")
