@@ -9,7 +9,7 @@ import streamlit as st
 from config import TEMP_DIR, SUPPORTED_VIDEO_FORMATS, SUPPORTED_AUDIO_FORMATS
 
 def get_file_extension(filename: str) -> str:
-    """Get lowercase file extension"""
+    """Gets file extension"""
     return Path(filename).suffix.lower()
 
 def is_video_file(filename: str) -> bool:

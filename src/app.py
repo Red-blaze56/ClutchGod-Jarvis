@@ -29,7 +29,7 @@ if 'transcripts' not in st.session_state:
 
 # Title
 st.title("🎓 Smart Video Summarizer")
-st.subheader("AI-Powered Study Assistant (Google Gemini)")
+st.subheader("AI-Powered Study Assistant")
 
 # Sidebar
 with st.sidebar:
@@ -65,13 +65,13 @@ with st.sidebar:
     st.caption("💡 Powered by Google Gemini 1.5 Flash")
     st.caption("⚡ FREE tier: 15 req/min, 1500 req/day")
 
-# Main area
+# Main area (Right wala Area)
 if not uploaded_file:
-    # Welcome screen
+
     st.markdown("---")
     st.markdown("### Welcome! 👋")
     st.markdown("""
-    This app uses **Google Gemini AI** (100% FREE!) to help you:
+    Usecases:
     - 📹 **Transcribe lecture videos** - Get text from any video
     - 🎵 **Convert audio to text** - Transcribe recordings automatically
     - 📝 **Summarize content** - Get brief or detailed summaries
@@ -80,15 +80,7 @@ if not uploaded_file:
     **Get started by uploading a video or audio file! →**
     """)
     
-    # Benefits of Google Gemini
-    st.info("""
-    **Why Google Gemini?**
-    - ✅ Completely FREE (no credit card needed)
-    - ✅ 1M token context (handles huge files)
-    - ✅ Fast processing with Gemini 1.5 Flash
-    - ✅ Great for students and academic projects
-    """)
-    
+
     # Example use cases
     col1, col2, col3 = st.columns(3)
     
@@ -224,11 +216,3 @@ if st.session_state.transcripts:
                 st.markdown("### 📚 Study Guide Summary:")
                 st.markdown(st.session_state[f'summary_{idx}'])
 
-# Footer
-st.markdown("---")
-st.markdown("""
-<div style='text-align: center; color: #666;'>
-    <p>Built with ❤️ using Streamlit, Google Gemini AI, and UV</p>
-    <p><small>✅ 100% FREE - No Credit Card Required</small></p>
-</div>
-""", unsafe_allow_html=True)
